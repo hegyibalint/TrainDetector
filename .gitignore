@@ -18,4 +18,9 @@ Thumbs.db
 
 # Libraries #
 #############
-traindetector_tests/lib
+/tests/traindetector_tests/lib
+
+# PlatformIO #
+##############
+.pioenvs
+.piolibdeps
