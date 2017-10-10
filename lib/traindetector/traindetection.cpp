@@ -1,5 +1,7 @@
 #include "traindetection.h"
 
+using namespace td;
+
 void TrainDetection::computeSpeed(time_t coverTimestamp) {
     time_t diff = coverTimestamp - this->startTimestamp;
     if (diff > 0) {
@@ -17,7 +19,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
     bool stepped = false;
     switch (this->state) {
         case C:
-            if (side != this->side && dir == RISING) {
+            if (side != this->side && dir == RISE) {
                 this->state = CO;
                 this->computeSpeed(timestamp);
                 stepped = true;
@@ -25,7 +27,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
             }
             break;
         case CO:
-            if (side == this->side && dir == FALLING) {
+            if (side == this->side && dir == FALL) {
                 this->state = O;
                 this->computeLength(timestamp);
                 stepped = true;
@@ -33,7 +35,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
             }
             break;
         case O:
-            if (side != this->side && dir == FALLING) {
+            if (side != this->side && dir == FALL) {
                 this->state = COMPL;
                 stepped = true;
                 break;
@@ -43,26 +45,6 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
             break;
     }
     return stepped;
-}
-
-std::ostream &operator<<(std::ostream &stream, const TrainDetection &td) {
-    static auto stateToString = [](DetectionState state) {
-        switch (state) {
-            case C:
-                return "Coming";
-            case CO:
-                return "Coming/Outbound";
-            case O:
-                return "Outbound";
-            case COMPL:
-                return "Departed";
-        }
-    };
-
-    stream << td.id;
-    stream << " " << stateToString(td.state);
-    stream << ", start: " << td.startTimestamp << ", speed: " << td.speed << ", length: " << td.length;
-    return stream;
 }
 
 int TrainDetection::getId() const {
@@ -84,3 +66,23 @@ double TrainDetection::getSpeed() const {
 double TrainDetection::getLength() const {
     return length;
 }
+
+//std::ostream &operator<<(std::ostream &stream, const TrainDetection &td) {
+//    static auto stateToString = [](DetectionState state) {
+//        switch (state) {
+//            case C:
+//                return "Coming";
+//            case CO:
+//                return "Coming/Outbound";
+//            case O:
+//                return "Outbound";
+//            case COMPL:
+//                return "Departed";
+//        }
+//    };
+//
+//    stream << td.id;
+//    stream << " " << stateToString(td.state);
+//    stream << ", start: " << td.startTimestamp << ", speed: " << td.speed << ", length: " << td.length;
+//    return stream;
+//}

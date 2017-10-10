@@ -2,6 +2,8 @@
 
 static int ID_COUNTER = 0;
 
+using namespace td;
+
 const TrainDetection &TrainDetector::handleEdge(SensorSide side, EdgeDirection dir, time_t timestamp) {
     for (TrainDetection &td : this->detections) {
         if (td.step(side, dir, timestamp)) {
