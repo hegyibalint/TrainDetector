@@ -2,12 +2,12 @@ project(traindetector)
 
 set(HEADER_FILES
         enums.h
-        debouncer.h
+        edgedetector.h
         traindetection.h
         traindetector.h)
 
 set(SOURCE_FILES
-        debouncer.cpp
+        edgedetector.cpp
         traindetection.cpp
         traindetector.cpp)
 

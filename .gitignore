@@ -25,3 +25,4 @@ Thumbs.db
 .pioenvs
 .piolibdeps
 CMakeListsPrivate.txt
+.vscode

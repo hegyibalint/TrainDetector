@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <ctime>
 #include <limits>
 #include "enums.h"
@@ -30,6 +31,8 @@ namespace td {
         DetectionState getState() const;
         double getSpeed() const;
         double getLength() const;
+
+        friend std::ostream &operator<<(std::ostream &stream, const TrainDetection& td);
     };
 
 };

@@ -19,7 +19,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
     bool stepped = false;
     switch (this->state) {
         case C:
-            if (side != this->side && dir == RISE) {
+            if (side != this->side && dir == RISING) {
                 this->state = CO;
                 this->computeSpeed(timestamp);
                 stepped = true;
@@ -27,7 +27,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
             }
             break;
         case CO:
-            if (side == this->side && dir == FALL) {
+            if (side == this->side && dir == FALLING) {
                 this->state = O;
                 this->computeLength(timestamp);
                 stepped = true;
@@ -35,7 +35,7 @@ bool TrainDetection::step(SensorSide side, EdgeDirection dir, time_t timestamp) 
             }
             break;
         case O:
-            if (side != this->side && dir == FALL) {
+            if (side != this->side && dir == FALLING) {
                 this->state = COMPL;
                 stepped = true;
                 break;
@@ -67,22 +67,26 @@ double TrainDetection::getLength() const {
     return length;
 }
 
-//std::ostream &operator<<(std::ostream &stream, const TrainDetection &td) {
-//    static auto stateToString = [](DetectionState state) {
-//        switch (state) {
-//            case C:
-//                return "Coming";
-//            case CO:
-//                return "Coming/Outbound";
-//            case O:
-//                return "Outbound";
-//            case COMPL:
-//                return "Departed";
-//        }
-//    };
-//
-//    stream << td.id;
-//    stream << " " << stateToString(td.state);
-//    stream << ", start: " << td.startTimestamp << ", speed: " << td.speed << ", length: " << td.length;
-//    return stream;
-//}
+namespace td {
+    std::ostream &operator<<(std::ostream &stream, const TrainDetection &td) {
+        static auto stateToString = [](DetectionState state) {
+            switch (state) {
+                case C:
+                    return "Coming";
+                case CO:
+                    return "Coming/Outbound";
+                case O:
+                    return "Outbound";
+                case COMPL:
+                    return "Departed";
+                default:
+                    return "Undefined";
+            }
+        };
+
+        stream << td.id;
+        stream << " " << stateToString(td.state);
+        stream << ", start: " << td.startTimestamp << ", speed: " << td.speed << ", length: " << td.length;
+        return stream;
+    }
+}

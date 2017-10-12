@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <traindetector.h>
 
+using namespace td;
+
 TEST(DistanceTest, SingleLocomotiveMeasurement) {
     TrainDetector detector;
 

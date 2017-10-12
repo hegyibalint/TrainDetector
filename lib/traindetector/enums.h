@@ -11,7 +11,11 @@ namespace td {
     } SensorSide;
 
     typedef enum {
-        NOEDGE, FALL, RISE
-    } EdgeDirection;
+        NOSIGNAL, LOW, HIGH
+    } SignalLevel;
 
+    typedef enum {
+        NOEDGE, FALLING, RISING
+    } EdgeDirection;
+    
 };

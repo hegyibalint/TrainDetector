@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <traindetector.h>
 
+using namespace td;
+
 TEST(DetectionTest, RegularLocomotive) {
     TrainDetector detector;
 
@@ -8,6 +10,20 @@ TEST(DetectionTest, RegularLocomotive) {
     detector.handleEdge(LEFT, RISING); // 1
     detector.handleEdge(RIGHT, FALLING); // 2
     detector.handleEdge(LEFT, FALLING); // 2
+
+    auto detections = detector.getDetections();
+    ASSERT_EQ(detections.size(), 1);
+    ASSERT_EQ(detections[0].getState(), DetectionState::COMPL);
+}
+
+
+TEST(DetectionTest, RegularReverseLocomotive) {
+    TrainDetector detector;
+
+    detector.handleEdge(LEFT, RISING); // 1
+    detector.handleEdge(RIGHT, RISING); // 1
+    detector.handleEdge(LEFT, FALLING); // 2
+    detector.handleEdge(RIGHT, FALLING); // 2
 
     auto detections = detector.getDetections();
     ASSERT_EQ(detections.size(), 1);
